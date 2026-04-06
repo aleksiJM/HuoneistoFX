@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,5 +35,7 @@ public class AsukasController implements Initializable {
     }
 
     private void suljeAsukas() {
+        Stage stage = (Stage) suljeAsukasPainike.getScene().getWindow();
+        stage.close();
     }
 }

@@ -2,10 +2,15 @@ package fi.jyu.ohj2.aleksi.huoneisto.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -27,11 +32,37 @@ public class MainController implements Initializable {
     }
 
     private void lisaaAsunto() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fi/jyu/ohj2/aleksi/huoneisto/lisaa-asunto.fxml")
+            );
+            Parent root = loader.load();
 
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException error) {
+            System.err.println("Virhe ladattaessa 'Lisää Asunto' näkymää");
+            error.printStackTrace();
+        }
     }
 
     private void muokkaaAsuntoa() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fi/jyu/ohj2/aleksi/huoneisto/muokkaa.fxml")
+            );
+            Parent root = loader.load();
 
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException error) {
+            System.err.println("Virhe ladattaessa 'Muokkaa' näkymää");
+            error.printStackTrace();
+        }
     }
 
     private void poistaAsunto() {
