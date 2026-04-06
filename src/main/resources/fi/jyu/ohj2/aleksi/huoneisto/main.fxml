@@ -10,7 +10,7 @@
 <VBox prefHeight="535.0" prefWidth="600.0"
       xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="fi.jyu.ohj2.aleksi.huoneisto.MainController">
+      fx:controller="fi.jyu.ohj2.aleksi.huoneisto.controller.MainController">
    <children>
       <TableView prefHeight="500.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
         <columns>
@@ -23,9 +23,9 @@
       </TableView>
       <HBox alignment="CENTER_LEFT" prefHeight="78.0" prefWidth="600.0" spacing="10.0" VBox.vgrow="NEVER">
          <children>
-            <Button mnemonicParsing="false" onAction="#lisaaAsunto" text="Lisää asunto" />
-            <Button mnemonicParsing="false" onAction="#muokkaaAsuntoa" text="Muokkaa" />
-            <Button mnemonicParsing="false" onAction="#poistaAsunto" text="Poista" />
+            <Button fx:id="lisaaAsuntoPainike" mnemonicParsing="false" text="Lisää asunto" />
+            <Button fx:id="muokkaaAsuntoaPainike" mnemonicParsing="false" text="Muokkaa" />
+            <Button fx:id="poistaAsuntoPainike" mnemonicParsing="false" text="Poista" />
          </children>
          <VBox.margin>
             <Insets />
