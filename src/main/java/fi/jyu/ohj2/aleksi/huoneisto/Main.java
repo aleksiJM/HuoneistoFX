@@ -1,4 +1,4 @@
-package fi.jyu.ohj2.aleksi.todo;
+package fi.jyu.ohj2.aleksi.huoneisto;
 
 import javafx.application.Application;
 

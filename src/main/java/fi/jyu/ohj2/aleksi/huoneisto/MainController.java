@@ -1,6 +1,5 @@
-package fi.jyu.ohj2.aleksi.todo;
+package fi.jyu.ohj2.aleksi.huoneisto;
 
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
