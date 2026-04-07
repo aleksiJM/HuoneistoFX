@@ -13,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,9 +34,12 @@ public class MuokkaaController implements Initializable {
     @FXML
     private TableView<Asukas> asukasTaulukko;
 
-    private final ObservableList<Asukas> asukkaat = FXCollections.observableArrayList();
+    @FXML
+    private Text otsikko;
 
     private Asunto muokattavaAsunto;
+
+    private Asukas valittuAsukas;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -42,23 +47,30 @@ public class MuokkaaController implements Initializable {
         nimiSarake.setCellValueFactory(cd ->
                 cd.getValue().nimiProperty()
         );
+        nimiSarake.setPrefWidth(100);
         asukasTaulukko.getColumns().add(nimiSarake);
 
         TableColumn<Asukas, Number> ikaSarake = new TableColumn<>("Ika");
         ikaSarake.setCellValueFactory(cd ->
                 cd.getValue().ikaProperty()
         );
+        ikaSarake.setPrefWidth(100);
         asukasTaulukko.getColumns().add(ikaSarake);
 
         TableColumn<Asukas, String> yhteystiedotSarake = new TableColumn<>("Sahkoposti tai puhelinnumero");
         yhteystiedotSarake.setCellValueFactory(cd ->
                 cd.getValue().yhteystiedotProperty()
         );
+        yhteystiedotSarake.setPrefWidth(300);
         asukasTaulukko.getColumns().add(yhteystiedotSarake);
 
         lisaaAsukasPainike.setOnAction(actionEvent -> lisaaAsukas());
         poistaAsukasPainike.setOnAction(actionEvent -> poistaAsukas());
         suljeMuokkausPainike.setOnAction(actionEvent -> suljeMuokkaus());
+
+        asukasTaulukko.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
+                valittuAsukas = newVal
+        );
     }
 
     private void lisaaAsukas() {
@@ -67,18 +79,14 @@ public class MuokkaaController implements Initializable {
             Parent root = loader.load();
 
             AsukasController controller = loader.getController();
+            controller.setAsunto(muokattavaAsunto);
 
             Stage dialogi = new Stage();
             dialogi.setScene(new Scene(root));
             dialogi.setTitle("Lisaa asukas");
 
+            dialogi.initModality(Modality.APPLICATION_MODAL);
             dialogi.showAndWait();
-
-            Asukas uusiAsukas = controller.getAsukas();
-
-            if (uusiAsukas != null) {
-                muokattavaAsunto.getAsukkaat().add(uusiAsukas);
-            }
 
         } catch (IOException error) {
             throw new RuntimeException(error);
@@ -86,6 +94,11 @@ public class MuokkaaController implements Initializable {
     }
 
     private void poistaAsukas() {
+        if (valittuAsukas == null) {
+            return;
+        }
+
+        muokattavaAsunto.getAsukkaat().remove(valittuAsukas);
     }
 
     private void suljeMuokkaus() {
@@ -97,5 +110,6 @@ public class MuokkaaController implements Initializable {
         this.muokattavaAsunto = asunto;
 
         asukasTaulukko.setItems(muokattavaAsunto.getAsukkaat());
+        otsikko.setText("Asunto: " + muokattavaAsunto.getTunnus());
     }
 }

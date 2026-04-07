@@ -1,6 +1,7 @@
 package fi.jyu.ohj2.aleksi.huoneisto.controller;
 
 import fi.jyu.ohj2.aleksi.huoneisto.model.Asukas;
+import fi.jyu.ohj2.aleksi.huoneisto.model.Asunto;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -27,12 +28,17 @@ public class AsukasController implements Initializable {
     @FXML
     private Button suljeAsukasPainike;
 
+    private Asunto muokattavaAsunto;
+
     private Asukas asukas;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         vahvistaAsukasPainike.setOnAction(actionEvent -> vahvistaAsukas());
         suljeAsukasPainike.setOnAction(actionEvent -> suljeAsukas());
+        asukkaanNimi.setOnAction(actionEvent -> vahvistaAsukas());
+        asukkaanIka.setOnAction(actionEvent -> vahvistaAsukas());
+        asukkaanYhteystiedot.setOnAction(actionEvent -> vahvistaAsukas());
     }
 
     private void vahvistaAsukas() {
@@ -56,9 +62,11 @@ public class AsukasController implements Initializable {
                 ika,
                 asukkaanYhteystiedot.getText()
         );
-
-        Stage stage = (Stage) vahvistaAsukasPainike.getScene().getWindow();
-        stage.close();
+        muokattavaAsunto.lisaaAsukas(asukas);
+        asukkaanNimi.clear();
+        asukkaanIka.clear();
+        asukkaanYhteystiedot.clear();
+        asukkaanNimi.requestFocus();
     }
 
     private void suljeAsukas() {
@@ -66,7 +74,7 @@ public class AsukasController implements Initializable {
         stage.close();
     }
 
-    public Asukas getAsukas() {
-        return asukas;
+    public void setAsunto(Asunto asunto) {
+        this.muokattavaAsunto = asunto;
     }
 }

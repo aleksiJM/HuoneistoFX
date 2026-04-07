@@ -1,6 +1,9 @@
 package fi.jyu.ohj2.aleksi.huoneisto.controller;
 
 import fi.jyu.ohj2.aleksi.huoneisto.model.Asunto;
+import fi.jyu.ohj2.aleksi.huoneisto.model.Taloyhtio;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -21,23 +24,26 @@ public class AsuntoController implements Initializable {
     @FXML
     private Button suljeAsuntoPainike;
 
+    private Taloyhtio taloyhtio = new Taloyhtio();
+
     private Asunto asunto;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         vahvistaAsuntoPainike.setOnAction(actionEvent -> vahvistaAsunto());
         suljeAsuntoPainike.setOnAction(actionEvent -> suljeAsunto());
+        asunnonTunnus.setOnAction(actionEvent -> vahvistaAsunto());
     }
 
     private void vahvistaAsunto() {
-        if (Objects.equals(asunnonTunnus.getText(), "")) {
+        String tunnus = asunnonTunnus.getText();
+        if (Objects.equals(tunnus, "")) {
             return;
         }
 
-        asunto = new Asunto(asunnonTunnus.getText());
-
-        Stage stage = (Stage) vahvistaAsuntoPainike.getScene().getWindow();
-        stage.close();
+        taloyhtio.lisaaAsunto(new Asunto(asunnonTunnus.getText()));
+        asunnonTunnus.clear();
+        asunnonTunnus.requestFocus();
     }
 
     private void suljeAsunto() {
@@ -47,5 +53,9 @@ public class AsuntoController implements Initializable {
 
     public Asunto getAsunto() {
         return asunto;
+    }
+
+    public void setTaloyhtio(Taloyhtio taloyhtio) {
+        this.taloyhtio = taloyhtio;
     }
 }

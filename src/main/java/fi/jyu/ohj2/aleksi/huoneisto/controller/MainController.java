@@ -2,6 +2,7 @@ package fi.jyu.ohj2.aleksi.huoneisto.controller;
 
 import fi.jyu.ohj2.aleksi.huoneisto.App;
 import fi.jyu.ohj2.aleksi.huoneisto.model.Asunto;
+import fi.jyu.ohj2.aleksi.huoneisto.model.Taloyhtio;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -31,7 +33,7 @@ public class MainController implements Initializable {
     @FXML
     private TableView<Asunto> asuntoTaulukko;
 
-    private final ObservableList<Asunto> asunnot = FXCollections.observableArrayList();
+    private Taloyhtio taloyhtio = new Taloyhtio();
 
     private Asunto valittuAsunto;
 
@@ -41,22 +43,25 @@ public class MainController implements Initializable {
         tunnusSarake.setCellValueFactory(cd ->
                 cd.getValue().tunnusProperty()
         );
+        tunnusSarake.setPrefWidth(150);
         asuntoTaulukko.getColumns().add(tunnusSarake);
 
         TableColumn<Asunto, Number> maaraSarake = new TableColumn<>("Asukkaiden maara");
         maaraSarake.setCellValueFactory(cd ->
                 cd.getValue().asukkaidenMaaraProperty()
         );
+        maaraSarake.setPrefWidth(150);
         asuntoTaulukko.getColumns().add(maaraSarake);
 
         lisaaAsuntoPainike.setOnAction(actionEvent -> lisaaAsunto());
         muokkaaAsuntoaPainike.setOnAction(actionEvent -> muokkaaAsuntoa());
         poistaAsuntoPainike.setOnAction(actionEvent -> poistaAsunto());
 
-        asuntoTaulukko.setItems(asunnot);
+        asuntoTaulukko.setItems(taloyhtio.getAsunnot());
 
         asuntoTaulukko.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
-                valittuAsunto = newVal);
+                valittuAsunto = newVal
+        );
     }
 
     private void lisaaAsunto() {
@@ -65,18 +70,14 @@ public class MainController implements Initializable {
             Parent root = loader.load();
 
             AsuntoController controller = loader.getController();
+            controller.setTaloyhtio(taloyhtio);
 
             Stage dialogi = new Stage();
             dialogi.setScene(new Scene(root));
             dialogi.setTitle("Lisaa asunto");
 
+            dialogi.initModality(Modality.APPLICATION_MODAL);
             dialogi.showAndWait();
-
-            Asunto uusiAsunto = controller.getAsunto();
-
-            if (uusiAsunto != null) {
-                asunnot.add(uusiAsunto);
-            }
 
         } catch (IOException error) {
             throw new RuntimeException(error);
@@ -99,6 +100,7 @@ public class MainController implements Initializable {
             dialogi.setScene(new Scene(root));
             dialogi.setTitle("Muokkaa asuntoa: " + valittuAsunto.getTunnus());
 
+            dialogi.initModality(Modality.APPLICATION_MODAL);
             dialogi.showAndWait();
 
         } catch (IOException error) {
@@ -107,6 +109,10 @@ public class MainController implements Initializable {
     }
 
     private void poistaAsunto() {
+        if (valittuAsunto == null) {
+            return;
+        }
 
+        taloyhtio.poistaAsunto(valittuAsunto);
     }
 }

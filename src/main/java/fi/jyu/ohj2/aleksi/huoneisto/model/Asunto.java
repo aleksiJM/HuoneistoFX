@@ -7,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Asunto {
-
     private final StringProperty tunnus = new SimpleStringProperty("");
     private final ObservableList<Asukas> asukkaat = FXCollections.observableArrayList();
     private final ReadOnlyIntegerWrapper asukkaidenMaara = new ReadOnlyIntegerWrapper();
