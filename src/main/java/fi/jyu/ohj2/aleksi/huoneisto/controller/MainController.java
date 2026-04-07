@@ -1,13 +1,17 @@
 package fi.jyu.ohj2.aleksi.huoneisto.controller;
 
-import javafx.event.ActionEvent;
+import fi.jyu.ohj2.aleksi.huoneisto.App;
+import fi.jyu.ohj2.aleksi.huoneisto.model.Asunto;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,44 +28,81 @@ public class MainController implements Initializable {
     @FXML
     private Button poistaAsuntoPainike;
 
+    @FXML
+    private TableView<Asunto> asuntoTaulukko;
+
+    private final ObservableList<Asunto> asunnot = FXCollections.observableArrayList();
+
+    private Asunto valittuAsunto;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        TableColumn<Asunto, String> tunnusSarake = new TableColumn<>("Asunnon tunnus");
+        tunnusSarake.setCellValueFactory(cd ->
+                cd.getValue().tunnusProperty()
+        );
+        asuntoTaulukko.getColumns().add(tunnusSarake);
+
+        TableColumn<Asunto, Number> maaraSarake = new TableColumn<>("Asukkaiden maara");
+        maaraSarake.setCellValueFactory(cd ->
+                cd.getValue().asukkaidenMaaraProperty()
+        );
+        asuntoTaulukko.getColumns().add(maaraSarake);
+
         lisaaAsuntoPainike.setOnAction(actionEvent -> lisaaAsunto());
         muokkaaAsuntoaPainike.setOnAction(actionEvent -> muokkaaAsuntoa());
         poistaAsuntoPainike.setOnAction(actionEvent -> poistaAsunto());
+
+        asuntoTaulukko.setItems(asunnot);
+
+        asuntoTaulukko.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
+                valittuAsunto = newVal);
     }
 
     private void lisaaAsunto() {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/fi/jyu/ohj2/aleksi/huoneisto/lisaa-asunto.fxml")
-            );
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("lisaa-asunto.fxml"));
             Parent root = loader.load();
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+            AsuntoController controller = loader.getController();
+
+            Stage dialogi = new Stage();
+            dialogi.setScene(new Scene(root));
+            dialogi.setTitle("Lisaa asunto");
+
+            dialogi.showAndWait();
+
+            Asunto uusiAsunto = controller.getAsunto();
+
+            if (uusiAsunto != null) {
+                asunnot.add(uusiAsunto);
+            }
 
         } catch (IOException error) {
-            System.err.println("Virhe ladattaessa 'Lisää Asunto' näkymää");
-            error.printStackTrace();
+            throw new RuntimeException(error);
         }
     }
 
     private void muokkaaAsuntoa() {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/fi/jyu/ohj2/aleksi/huoneisto/muokkaa.fxml")
-            );
+            if (valittuAsunto == null) {
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("muokkaa.fxml"));
             Parent root = loader.load();
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+            MuokkaaController controller = loader.getController();
+            controller.setAsunto(valittuAsunto);
+
+            Stage dialogi = new Stage();
+            dialogi.setScene(new Scene(root));
+            dialogi.setTitle("Muokkaa asuntoa: " + valittuAsunto.getTunnus());
+
+            dialogi.showAndWait();
 
         } catch (IOException error) {
-            System.err.println("Virhe ladattaessa 'Muokkaa' näkymää");
-            error.printStackTrace();
+            throw new RuntimeException(error);
         }
     }
 
