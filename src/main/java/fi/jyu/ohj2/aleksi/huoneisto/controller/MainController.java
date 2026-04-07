@@ -3,8 +3,6 @@ package fi.jyu.ohj2.aleksi.huoneisto.controller;
 import fi.jyu.ohj2.aleksi.huoneisto.App;
 import fi.jyu.ohj2.aleksi.huoneisto.model.Asunto;
 import fi.jyu.ohj2.aleksi.huoneisto.model.Taloyhtio;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,7 +10,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -33,7 +33,7 @@ public class MainController implements Initializable {
     @FXML
     private TableView<Asunto> asuntoTaulukko;
 
-    private Taloyhtio taloyhtio = new Taloyhtio();
+    private final Taloyhtio taloyhtio = new Taloyhtio("taloyhtio.json");
 
     private Asunto valittuAsunto;
 
@@ -53,13 +53,27 @@ public class MainController implements Initializable {
         maaraSarake.setPrefWidth(150);
         asuntoTaulukko.getColumns().add(maaraSarake);
 
-        lisaaAsuntoPainike.setOnAction(actionEvent -> lisaaAsunto());
-        muokkaaAsuntoaPainike.setOnAction(actionEvent -> muokkaaAsuntoa());
-        poistaAsuntoPainike.setOnAction(actionEvent -> poistaAsunto());
+        asuntoTaulukko.setRowFactory(_ -> {
+            TableRow<Asunto> row = new TableRow<>();
 
+            row.setOnMouseClicked(event -> {
+                if (event.getButton().equals(MouseButton.PRIMARY) &&
+                event.getClickCount() == 2 && !row.isEmpty()) {
+                    muokkaaAsuntoa();
+                }
+            });
+
+            return row;
+        });
+
+        lisaaAsuntoPainike.setOnAction(_ -> lisaaAsunto());
+        muokkaaAsuntoaPainike.setOnAction(_ -> muokkaaAsuntoa());
+        poistaAsuntoPainike.setOnAction(_ -> poistaAsunto());
+
+        taloyhtio.lataa();
         asuntoTaulukko.setItems(taloyhtio.getAsunnot());
 
-        asuntoTaulukko.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
+        asuntoTaulukko.getSelectionModel().selectedItemProperty().addListener((_, _, newVal) ->
                 valittuAsunto = newVal
         );
     }
@@ -95,6 +109,7 @@ public class MainController implements Initializable {
 
             MuokkaaController controller = loader.getController();
             controller.setAsunto(valittuAsunto);
+            controller.setTaloyhtio(taloyhtio);
 
             Stage dialogi = new Stage();
             dialogi.setScene(new Scene(root));

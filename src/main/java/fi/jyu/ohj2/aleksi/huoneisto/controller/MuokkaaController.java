@@ -3,8 +3,7 @@ package fi.jyu.ohj2.aleksi.huoneisto.controller;
 import fi.jyu.ohj2.aleksi.huoneisto.App;
 import fi.jyu.ohj2.aleksi.huoneisto.model.Asukas;
 import fi.jyu.ohj2.aleksi.huoneisto.model.Asunto;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import fi.jyu.ohj2.aleksi.huoneisto.model.Taloyhtio;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -41,6 +40,8 @@ public class MuokkaaController implements Initializable {
 
     private Asukas valittuAsukas;
 
+    private Taloyhtio taloyhtio;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         TableColumn<Asukas, String> nimiSarake = new TableColumn<>("Nimi");
@@ -64,9 +65,9 @@ public class MuokkaaController implements Initializable {
         yhteystiedotSarake.setPrefWidth(300);
         asukasTaulukko.getColumns().add(yhteystiedotSarake);
 
-        lisaaAsukasPainike.setOnAction(actionEvent -> lisaaAsukas());
-        poistaAsukasPainike.setOnAction(actionEvent -> poistaAsukas());
-        suljeMuokkausPainike.setOnAction(actionEvent -> suljeMuokkaus());
+        lisaaAsukasPainike.setOnAction(_ -> lisaaAsukas());
+        poistaAsukasPainike.setOnAction(_ -> poistaAsukas());
+        suljeMuokkausPainike.setOnAction(_ -> suljeMuokkaus());
 
         asukasTaulukko.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
                 valittuAsukas = newVal
@@ -88,6 +89,7 @@ public class MuokkaaController implements Initializable {
             dialogi.initModality(Modality.APPLICATION_MODAL);
             dialogi.showAndWait();
 
+            taloyhtio.tallenna();
         } catch (IOException error) {
             throw new RuntimeException(error);
         }
@@ -98,7 +100,8 @@ public class MuokkaaController implements Initializable {
             return;
         }
 
-        muokattavaAsunto.getAsukkaat().remove(valittuAsukas);
+        muokattavaAsunto.getAsukkaatObservable().remove(valittuAsukas);
+        taloyhtio.tallenna();
     }
 
     private void suljeMuokkaus() {
@@ -109,7 +112,11 @@ public class MuokkaaController implements Initializable {
     public void setAsunto(Asunto asunto) {
         this.muokattavaAsunto = asunto;
 
-        asukasTaulukko.setItems(muokattavaAsunto.getAsukkaat());
+        asukasTaulukko.setItems(muokattavaAsunto.getAsukkaatObservable());
         otsikko.setText("Asunto: " + muokattavaAsunto.getTunnus());
+    }
+
+    public void setTaloyhtio(Taloyhtio taloyhtio) {
+        this.taloyhtio = taloyhtio;
     }
 }

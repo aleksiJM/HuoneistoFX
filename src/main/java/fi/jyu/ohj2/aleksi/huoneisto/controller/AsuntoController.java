@@ -24,7 +24,7 @@ public class AsuntoController implements Initializable {
     @FXML
     private Button suljeAsuntoPainike;
 
-    private Taloyhtio taloyhtio = new Taloyhtio();
+    private Taloyhtio taloyhtio = new Taloyhtio("taloyhtio.json");
 
     private Asunto asunto;
 

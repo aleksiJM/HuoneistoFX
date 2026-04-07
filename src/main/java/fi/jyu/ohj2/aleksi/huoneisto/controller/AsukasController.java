@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class AsukasController implements Initializable {
@@ -62,7 +61,7 @@ public class AsukasController implements Initializable {
                 ika,
                 asukkaanYhteystiedot.getText()
         );
-        muokattavaAsunto.lisaaAsukas(asukas);
+        muokattavaAsunto.getAsukkaatObservable().add(asukas);
         asukkaanNimi.clear();
         asukkaanIka.clear();
         asukkaanYhteystiedot.clear();
