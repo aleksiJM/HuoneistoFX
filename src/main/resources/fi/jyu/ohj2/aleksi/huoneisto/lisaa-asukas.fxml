@@ -7,47 +7,39 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="150" prefWidth="300"
-      xmlns="http://javafx.com/javafx/25"
-      xmlns:fx="http://javafx.com/fxml/1"
+<VBox prefHeight="150" prefWidth="300" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="fi.jyu.ohj2.aleksi.huoneisto.controller.AsukasController">
-    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
-         <children>
-                <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
-                    <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nimi" />
-                        <TextField fx:id="asukkaanNimi" />
-                    </children>
-                </VBox>
-                <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
-                    <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ika" />
-                        <TextField fx:id="asukkaanIka" />
-                    </children>
-                </VBox>
-            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sahkoposti tai puhelinnumero" />
-                  <TextField fx:id="asukkaanYhteystiedot" />
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </VBox>
-         </children>
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </VBox.margin>
-      </VBox>
-        <HBox alignment="CENTER" prefHeight="78.0" prefWidth="600.0" spacing="10.0">
-            <children>
-                <Button fx:id="vahvistaAsukasPainike" mnemonicParsing="false" text="Vahvista" />
-                <Button fx:id="suljeAsukasPainike" mnemonicParsing="false" text="Sulje" />
-            </children>
+    <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" VBox.vgrow="ALWAYS">
+        <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+        </VBox.margin>
+        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="2.0">
+            <HBox prefHeight="100.0" prefWidth="200.0">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nimi"/>
+            </HBox>
+            <TextField fx:id="asukkaanNimi"/>
+        </VBox>
+        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="2.0">
+            <HBox prefHeight="100.0" prefWidth="200.0">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ika"/>
+            </HBox>
+            <TextField fx:id="asukkaanIka"/>
+        </VBox>
+        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="2.0">
             <VBox.margin>
-                <Insets left="20.0" right="20.0" />
+                <Insets/>
             </VBox.margin>
-        </HBox>
-    </children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sahkoposti tai puhelinnumero"/>
+            </HBox>
+            <TextField fx:id="asukkaanYhteystiedot"/>
+        </VBox>
+    </VBox>
+    <HBox alignment="CENTER" prefHeight="78.0" prefWidth="600.0" spacing="10.0">
+        <VBox.margin>
+            <Insets bottom="10.0" left="20.0" right="20.0"/>
+        </VBox.margin>
+        <Button fx:id="vahvistaAsukasPainike" mnemonicParsing="false" text="Vahvista"/>
+        <Button fx:id="suljeAsukasPainike" mnemonicParsing="false" text="Sulje"/>
+    </HBox>
 </VBox>
