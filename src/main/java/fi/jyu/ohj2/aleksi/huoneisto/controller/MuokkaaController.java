@@ -100,7 +100,7 @@ public class MuokkaaController implements Initializable {
             return;
         }
 
-        muokattavaAsunto.getAsukkaatObservable().remove(valittuAsukas);
+        muokattavaAsunto.poistaAsukas(valittuAsukas);
         taloyhtio.tallenna();
     }
 

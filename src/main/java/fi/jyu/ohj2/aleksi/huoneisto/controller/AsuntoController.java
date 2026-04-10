@@ -2,8 +2,6 @@ package fi.jyu.ohj2.aleksi.huoneisto.controller;
 
 import fi.jyu.ohj2.aleksi.huoneisto.model.Asunto;
 import fi.jyu.ohj2.aleksi.huoneisto.model.Taloyhtio;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -30,9 +28,9 @@ public class AsuntoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        vahvistaAsuntoPainike.setOnAction(actionEvent -> vahvistaAsunto());
-        suljeAsuntoPainike.setOnAction(actionEvent -> suljeAsunto());
-        asunnonTunnus.setOnAction(actionEvent -> vahvistaAsunto());
+        vahvistaAsuntoPainike.setOnAction(_ -> vahvistaAsunto());
+        suljeAsuntoPainike.setOnAction(_ -> suljeAsunto());
+        asunnonTunnus.setOnAction(_ -> vahvistaAsunto());
     }
 
     private void vahvistaAsunto() {

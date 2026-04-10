@@ -29,15 +29,12 @@ public class Taloyhtio {
     public ObservableList<Asunto> getAsunnot() {
         return asunnot;
     }
-
     public void setAsunnot(List<Asunto> asunnotLista) {
         asunnot.setAll(asunnotLista);
     }
-
     public void lisaaAsunto(Asunto asunto) {
         asunnot.add(asunto);
     }
-
     public void poistaAsunto(Asunto asunto) {
         asunnot.remove(asunto);
     }

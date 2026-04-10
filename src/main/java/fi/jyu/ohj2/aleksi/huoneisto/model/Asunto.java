@@ -32,7 +32,6 @@ public class Asunto {
         );
     }
 
-    // tunnus
     public String getTunnus() { return tunnus.get(); }
     public void setTunnus(String tunnus) { this.tunnus.set(tunnus); }
     public StringProperty tunnusProperty() { return tunnus; }
